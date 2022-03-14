@@ -46,8 +46,7 @@ void setup() {
 
   volumePerCm = volume / height;
 
-  // Show initial display buffer contents on the screen --
-  // the library initializes this with an Adafruit splash screen.
+  // Show Adafruit splash screen. (it's nice :)
   display.display();
   delay(2000); // Pause for 2 seconds
 
@@ -61,7 +60,7 @@ void loop() {
   Serial.println(distance); // output to serial for raspberry
   displayData(distance);
 
-  delay(timer); //Delay 50 ms
+  delay(timer); //Delay
 }
 
 //use sensor to measure the distance
@@ -90,16 +89,24 @@ void displayData(int distance)
   display.print(distance);
   display.println(F(" cm"));
 
+  //check if distance is not bigger than height of the water tank and offset of the sensor position
   if (distance > height + offset)
   {
     display.println("error 01");
+    display.display();
+  }
+  //check if distance is smaller than offset of the sensor position
+  else if (distance < offset)
+  {
+    display.println("error 02");
+    display.display();
   }
   else
-  //calculate volume
-  //height 150 cm -> 150 cm = 0 L, 0cm = 6000 L
-  //1cm = 40 L
-  display.print("V: ");
-  display.print((distance-height-offset)*volumePerCm);
-  display.println(F(" l"));
-  display.display();
+  {
+    //calculate volume
+    display.print("V: ");
+    display.print((height+offset-distance)*volumePerCm);
+    display.println(F(" l"));
+    display.display();
+  }
 }
