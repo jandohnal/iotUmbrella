@@ -10,6 +10,7 @@ parameters
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include <NewPing.h>
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 32 // OLED display height, in pixels
@@ -22,22 +23,23 @@ parameters
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 //ultrasonic sensor
-#define echoPin 10 // Echo Pin (OUTPUT pin in RB URF02)
-#define trigPin 9 // Trigger Pin (INPUT pin in RB URF02)
+#define ECHO_PIN 10 // Echo Pin (OUTPUT pin in RB URF02)
+#define TRIGGER_PIN 9 // Trigger Pin (INPUT pin in RB URF02)
 
 //water tank parameters (in cm)
-int height = 150;
-int offset = 30;
+int height = 145;
+int offset = 58;
 int volume = 6000;
 
 long distance; // calculated distance
 int volumePerCm; // precalculated parameter of water tank
-int timer = 10000; // let's measure every 10 seconds (some fancy time controll to be added later)
+int timer = 1000; // let's measure every 1 seconds (some fancy time controll to be added later)
+
+// NewPing setup of pins and maximum distance
+NewPing sonar(TRIGGER_PIN, ECHO_PIN, 400); 
 
 void setup() {
   Serial.begin(9600);
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
   if(!display.begin(SSD1306_SWITCHCAPVCC, SCREEN_ADDRESS)) {
     Serial.println(F("SSD1306 allocation failed"));
@@ -56,26 +58,11 @@ void setup() {
 
 void loop() {
 
-  distance = calcDistance();
+  distance = sonar.ping_cm();
   Serial.println(distance); // output to serial for raspberry
   displayData(distance);
 
   delay(timer); //Delay
-}
-
-//use sensor to measure the distance
-long calcDistance()
-{
-  long duration;
-
-  digitalWrite(trigPin, LOW); 
-  delayMicroseconds(2); 
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10); 
-  digitalWrite(trigPin, LOW);
-  duration = pulseIn(echoPin, HIGH);
-
-  return duration/58.2; //Calculate the distance (in cm) based on the speed of sound.
 }
 
 void displayData(int distance)
@@ -85,7 +72,7 @@ void displayData(int distance)
   display.setTextSize(2);             // Normal 1:1 pixel scale
   display.setTextColor(SSD1306_WHITE);        // Draw white text
   display.setCursor(0,0);             // Start at top-left corner
-  display.print("L: ");
+  display.print("l: ");
   display.print(distance);
   display.println(F(" cm"));
 
