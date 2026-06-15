@@ -14,9 +14,12 @@
 #define RF_CE_PIN   4
 #define RF_CSN_PIN  5
 
+static const int TANK_VOLUME = 6000;
+static const int TANK_HEIGHT = 145;
+
 // Parametry nádrže – přesunuto z původního sketche.
 //   výška vodního sloupce 145 cm, objem 6000 l, offset senzoru 58 cm.
-WaterTank tank(145, 6000, 58);
+WaterTank tank(TANK_HEIGHT, TANK_VOLUME, 24);
 OledDisplay display;
 RF24 radio(RF_CE_PIN, RF_CSN_PIN);
 
@@ -29,6 +32,7 @@ void setup() {
   Serial.begin(115200);
 
   bool ok = radio.begin();
+  
   radio.setPALevel(RF24_PA_HIGH);
   radio.setDataRate(RF24_1MBPS);     // explicitně – musí sedět s vysílačem
   radio.setChannel(TANK_RF_CHANNEL);
@@ -64,7 +68,15 @@ void loop() {
       display.ShowError("No echo");
     } else {
       int volume = tank.GetActVolume(reading.distanceCm);
-      display.ShowReading(reading.distanceCm, volume);
+      const char* status = "";
+
+      if (volume == 0) {
+        status = "Sucho";
+      } else if (volume > TANK_VOLUME) {
+        status = "Nad kótou přelivu";
+      }
+
+      display.ShowReading(reading.distanceCm, volume, status);
     }
   }
 

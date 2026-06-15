@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 560" font-family="Segoe UI, Arial, sans-serif">
+  <style>
+    .title  { font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .sub    { font-size: 13px; fill: #555; }
+    .board  { fill: #1d3557; stroke: #0d1b2a; stroke-width: 2; }
+    .boardlabel { fill: #fff; font-size: 16px; font-weight: 700; }
+    .comp   { fill: #2a9d8f; stroke: #1e7268; stroke-width: 2; }
+    .comp2  { fill: #e76f51; stroke: #b8442b; stroke-width: 2; }
+    .complabel { fill: #fff; font-size: 14px; font-weight: 700; }
+    .pin    { font-size: 12px; fill: #1a1a2e; }
+    .pinw   { font-size: 12px; fill: #fff; }
+    .note   { font-size: 11px; fill: #9b2226; }
+    .w5     { stroke: #e63946; stroke-width: 2.5; fill: none; }  /* 5V */
+    .w3     { stroke: #f4a261; stroke-width: 2.5; fill: none; }  /* 3.3V */
+    .wg     { stroke: #495057; stroke-width: 2.5; fill: none; }  /* GND */
+    .wd     { stroke: #457b9d; stroke-width: 2.5; fill: none; }  /* data */
+    .leglbl { font-size: 12px; fill: #333; }
+  </style>
+
+  <text x="20" y="34" class="title">Vysílač – Arduino Nano</text>
+  <text x="20" y="54" class="sub">AJ-SR04M / RCWL-1655 (ultrazvuk) + nRF24L01 (rádio) · hardwarové SPI</text>
+
+  <!-- Arduino Nano board -->
+  <rect x="300" y="150" width="170" height="300" rx="8" class="board"/>
+  <text x="385" y="305" class="boardlabel" text-anchor="middle">Arduino</text>
+  <text x="385" y="325" class="boardlabel" text-anchor="middle">Nano</text>
+
+  <!-- Nano pin stubs (right side -> nRF24) -->
+  <text x="462" y="180" class="pinw" text-anchor="end">D13</text>
+  <text x="462" y="208" class="pinw" text-anchor="end">D12</text>
+  <text x="462" y="236" class="pinw" text-anchor="end">D11</text>
+  <text x="462" y="264" class="pinw" text-anchor="end">D8</text>
+  <text x="462" y="292" class="pinw" text-anchor="end">D7</text>
+  <text x="462" y="320" class="pinw" text-anchor="end">3V3</text>
+  <text x="462" y="430" class="pinw" text-anchor="end">GND</text>
+
+  <!-- Nano pin stubs (left side -> HC-SR04) -->
+  <text x="308" y="190" class="pinw" text-anchor="start">5V</text>
+  <text x="308" y="225" class="pinw" text-anchor="start">D9</text>
+  <text x="308" y="260" class="pinw" text-anchor="start">D4</text>
+  <text x="308" y="430" class="pinw" text-anchor="start">GND</text>
+
+  <!-- HC-SR04 -->
+  <rect x="40" y="150" width="150" height="150" rx="8" class="comp2"/>
+  <text x="115" y="176" class="pinw" text-anchor="middle" font-weight="700" font-size="14">AJ-SR04M</text>
+  <text x="115" y="192" class="pinw" text-anchor="middle" font-size="11">RCWL-1655</text>
+  <text x="50" y="215" class="pinw">VCC</text>
+  <text x="50" y="228" class="pinw">TRIG</text>
+  <text x="50" y="251" class="pinw">ECHO</text>
+  <text x="50" y="290" class="pinw">GND</text>
+
+  <!-- nRF24L01 -->
+  <rect x="560" y="150" width="160" height="220" rx="8" class="comp"/>
+  <text x="640" y="178" class="complabel" text-anchor="middle">nRF24L01</text>
+  <text x="572" y="205" class="pinw">VCC 3.3V</text>
+  <text x="572" y="228" class="pinw">CE</text>
+  <text x="572" y="251" class="pinw">CSN</text>
+  <text x="572" y="274" class="pinw">SCK</text>
+  <text x="572" y="297" class="pinw">MOSI</text>
+  <text x="572" y="320" class="pinw">MISO</text>
+  <text x="572" y="350" class="pinw">GND  (IRQ nezapojeno)</text>
+
+  <!-- Wires: HC-SR04 to Nano -->
+  <path class="w5"  d="M190 200 H 305"/>                <!-- VCC 5V -->
+  <path class="wd"  d="M190 223 H 250 V 220 H 305"/>    <!-- TRIG-D9 -->
+  <path class="wd"  d="M190 246 H 230 V 255 H 305"/>    <!-- ECHO-D4 -->
+  <path class="wg"  d="M190 286 H 270 V 425 H 305"/>    <!-- GND -->
+
+  <!-- Wires: Nano to nRF24 -->
+  <path class="w3"  d="M468 315 H 540 V 200 H 558"/>    <!-- 3V3 -->
+  <path class="wd"  d="M468 287 H 525 V 223 H 558"/>    <!-- D7-CE -->
+  <path class="wd"  d="M468 259 H 532 V 246 H 558"/>    <!-- D8-CSN -->
+  <path class="wd"  d="M468 175 H 546 V 269 H 558"/>    <!-- D13-SCK -->
+  <path class="wd"  d="M468 231 H 510 V 292 H 558"/>    <!-- D11-MOSI -->
+  <path class="wd"  d="M468 203 H 518 V 315 H 558"/>    <!-- D12-MISO -->
+  <path class="wg"  d="M468 425 H 545 V 345 H 558"/>    <!-- GND -->
+
+  <text x="20" y="490" class="note">⚠ ECHO musí být na D4 (ne D10 = SPI SS, jinak rawUs = 0).</text>
+  <text x="20" y="508" class="note">💡 Přidej 10 µF kondenzátor mezi VCC a GND nRF24L01 (blízko modulu).</text>
+
+  <!-- legend -->
+  <line x1="430" y1="500" x2="460" y2="500" class="w5"/>  <text x="466" y="504" class="leglbl">5V</text>
+  <line x1="500" y1="500" x2="530" y2="500" class="w3"/>  <text x="536" y="504" class="leglbl">3.3V</text>
+  <line x1="580" y1="500" x2="610" y2="500" class="wd"/>  <text x="616" y="504" class="leglbl">data</text>
+  <line x1="660" y1="500" x2="690" y2="500" class="wg"/>  <text x="696" y="504" class="leglbl">GND</text>
+</svg>

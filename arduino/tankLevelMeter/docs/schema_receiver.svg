@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 560" font-family="Segoe UI, Arial, sans-serif">
+  <style>
+    .title  { font-size: 22px; font-weight: 700; fill: #1a1a2e; }
+    .sub    { font-size: 13px; fill: #555; }
+    .board  { fill: #1d3557; stroke: #0d1b2a; stroke-width: 2; }
+    .boardlabel { fill: #fff; font-size: 16px; font-weight: 700; }
+    .comp   { fill: #2a9d8f; stroke: #1e7268; stroke-width: 2; }
+    .comp2  { fill: #6a4c93; stroke: #4a3268; stroke-width: 2; }
+    .pinw   { font-size: 12px; fill: #fff; }
+    .note   { font-size: 11px; fill: #1d3557; }
+    .w3     { stroke: #f4a261; stroke-width: 2.5; fill: none; }  /* 3.3V */
+    .wg     { stroke: #495057; stroke-width: 2.5; fill: none; }  /* GND */
+    .wd     { stroke: #457b9d; stroke-width: 2.5; fill: none; }  /* data */
+    .wi     { stroke: #2a9d8f; stroke-width: 2.5; fill: none; }  /* i2c */
+    .leglbl { font-size: 12px; fill: #333; }
+  </style>
+
+  <text x="20" y="34" class="title">Přijímač – ESP32 (esp32dev)</text>
+  <text x="20" y="54" class="sub">nRF24L01 (VSPI) + OLED SSD1306 128×64 (hardwarové I2C)</text>
+
+  <!-- ESP32 board -->
+  <rect x="300" y="130" width="170" height="340" rx="8" class="board"/>
+  <text x="385" y="295" class="boardlabel" text-anchor="middle">ESP32</text>
+  <text x="385" y="315" class="boardlabel" text-anchor="middle">DevKit</text>
+
+  <!-- ESP32 right side pins -> nRF24 -->
+  <text x="462" y="160" class="pinw" text-anchor="end">GPIO18</text>
+  <text x="462" y="186" class="pinw" text-anchor="end">GPIO19</text>
+  <text x="462" y="212" class="pinw" text-anchor="end">GPIO23</text>
+  <text x="462" y="238" class="pinw" text-anchor="end">GPIO5</text>
+  <text x="462" y="264" class="pinw" text-anchor="end">GPIO4</text>
+  <text x="462" y="290" class="pinw" text-anchor="end">3V3</text>
+  <text x="462" y="450" class="pinw" text-anchor="end">GND</text>
+
+  <!-- ESP32 left side pins -> OLED -->
+  <text x="308" y="170" class="pinw" text-anchor="start">3V3</text>
+  <text x="308" y="200" class="pinw" text-anchor="start">GPIO21 (SDA)</text>
+  <text x="308" y="230" class="pinw" text-anchor="start">GPIO22 (SCL)</text>
+  <text x="308" y="450" class="pinw" text-anchor="start">GND</text>
+
+  <!-- OLED SSD1306 -->
+  <rect x="40" y="140" width="160" height="150" rx="8" class="comp2"/>
+  <text x="120" y="168" class="pinw" text-anchor="middle" font-weight="700" font-size="14">OLED SSD1306</text>
+  <text x="120" y="184" class="pinw" text-anchor="middle" font-size="11">128×64 I2C</text>
+  <text x="52" y="212" class="pinw">VCC 3.3V</text>
+  <text x="52" y="235" class="pinw">SDA</text>
+  <text x="52" y="258" class="pinw">SCL</text>
+  <text x="52" y="282" class="pinw">GND</text>
+
+  <!-- nRF24L01 -->
+  <rect x="560" y="140" width="160" height="230" rx="8" class="comp"/>
+  <text x="640" y="168" class="pinw" text-anchor="middle" font-weight="700" font-size="14">nRF24L01</text>
+  <text x="572" y="195" class="pinw">VCC 3.3V</text>
+  <text x="572" y="218" class="pinw">CE</text>
+  <text x="572" y="241" class="pinw">CSN</text>
+  <text x="572" y="264" class="pinw">SCK</text>
+  <text x="572" y="287" class="pinw">MOSI</text>
+  <text x="572" y="310" class="pinw">MISO</text>
+  <text x="572" y="345" class="pinw">GND  (IRQ nezapojeno)</text>
+
+  <!-- Wires: OLED to ESP32 -->
+  <path class="w3"  d="M200 207 H 250 V 165 H 305"/>    <!-- VCC 3V3 -->
+  <path class="wi"  d="M200 230 H 270 V 195 H 305"/>    <!-- SDA -->
+  <path class="wi"  d="M200 253 H 285 V 225 H 305"/>    <!-- SCL -->
+  <path class="wg"  d="M200 278 H 260 V 445 H 305"/>    <!-- GND -->
+
+  <!-- Wires: ESP32 to nRF24 -->
+  <path class="w3"  d="M468 285 H 540 V 190 H 558"/>    <!-- 3V3 -->
+  <path class="wd"  d="M468 259 H 528 V 213 H 558"/>    <!-- GPIO4-CE -->
+  <path class="wd"  d="M468 233 H 535 V 236 H 558"/>    <!-- GPIO5-CSN -->
+  <path class="wd"  d="M468 155 H 548 V 259 H 558"/>    <!-- GPIO18-SCK -->
+  <path class="wd"  d="M468 207 H 512 V 282 H 558"/>    <!-- GPIO23-MOSI -->
+  <path class="wd"  d="M468 181 H 520 V 305 H 558"/>    <!-- GPIO19-MISO -->
+  <path class="wg"  d="M468 445 H 545 V 340 H 558"/>    <!-- GND -->
+
+  <text x="20" y="500" class="note">SDA/SCL = výchozí I2C piny ESP32 (21/22). nRF24 běží na VSPI (18/19/23).</text>
+
+  <!-- legend -->
+  <line x1="430" y1="515" x2="460" y2="515" class="w3"/>  <text x="466" y="519" class="leglbl">3.3V</text>
+  <line x1="500" y1="515" x2="530" y2="515" class="wi"/>  <text x="536" y="519" class="leglbl">I2C</text>
+  <line x1="565" y1="515" x2="595" y2="515" class="wd"/>  <text x="601" y="519" class="leglbl">SPI</text>
+  <line x1="635" y1="515" x2="665" y2="515" class="wg"/>  <text x="671" y="519" class="leglbl">GND</text>
+</svg>

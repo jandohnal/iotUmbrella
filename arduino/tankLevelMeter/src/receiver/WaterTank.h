@@ -16,7 +16,7 @@ class WaterTank {
     WaterTank(int h, int v, int o);
 
     // Vrací objem [l] pro danou vzdálenost [cm].
-    //   -1 = vzdálenost větší než dno nádrže (nesmysl / chyba)
-    //   -2 = vzdálenost menší než offset (nad plnou hladinou)
+    //   0 = vzdálenost větší než dno nádrže (nesmysl / chyba)
+    //   volume + 1 = vzdálenost menší než offset (nad plnou hladinou)
     int GetActVolume(int distance);
 };

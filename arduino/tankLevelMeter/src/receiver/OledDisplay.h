@@ -11,6 +11,6 @@ class OledDisplay {
 
     bool Initialize();
     void ShowSplash();
-    void ShowReading(int distanceCm, int volume);
+    void ShowReading(int distanceCm, int volume, const char* msg);
     void ShowError(const char* msg);
 };

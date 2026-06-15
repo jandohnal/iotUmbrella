@@ -9,7 +9,8 @@ WaterTank::WaterTank(int h, int v, int o) {
 }
 
 int WaterTank::GetActVolume(int distance) {
-  if (distance > totalHeight) return -1;
-  if (distance < offset)      return -2;
+  if (distance > totalHeight) return 0;
+  if (distance < offset)      return volume + 1;
+  
   return (totalHeight - distance) * volumePerCm;
 }
