@@ -66,16 +66,22 @@ static unsigned int measureDistanceCm() {
   // 1) Nasbírej platné odrazy (NO_ECHO = 0 zahoď rovnou).
   for (uint8_t i = 0; i < MEAS_SAMPLES; i++) {
     unsigned int cm = sonar.convert_cm(sonar.ping());
+
     if (cm > 0) samples[n++] = cm;
+    
     delay(30);   // odstup mezi pingy, ať dozní ozvěny
   }
+
   if (n == 0) return 0;   // žádný odraz
 
   // 2) Seřaď (malé pole -> bublinka stačí) a vezmi medián jako referenci.
   for (uint8_t i = 0; i + 1 < n; i++)
     for (uint8_t j = 0; j + 1 < n - i; j++)
       if (samples[j] > samples[j + 1]) {
-        unsigned int t = samples[j]; samples[j] = samples[j + 1]; samples[j + 1] = t;
+        unsigned int t = samples[j]; 
+
+        samples[j] = samples[j + 1];
+        samples[j + 1] = t;
       }
   unsigned int median = samples[n / 2];
 
@@ -83,7 +89,10 @@ static unsigned int measureDistanceCm() {
   unsigned long sum = 0;
   uint8_t cnt = 0;
   for (uint8_t i = 0; i < n; i++) {
-    unsigned int diff = (samples[i] > median) ? samples[i] - median : median - samples[i];
+    unsigned int diff = (samples[i] > median) 
+    ? samples[i] - median 
+    : median - samples[i];
+    
     if (diff <= TOLERANCE_CM) { sum += samples[i]; cnt++; }
   }
   return cnt ? (unsigned int)(sum / cnt) : median;   // medián filtrem projde vždy
