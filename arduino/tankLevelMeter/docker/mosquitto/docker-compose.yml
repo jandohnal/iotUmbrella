@@ -1,0 +1,19 @@
+# =====================================================================
+#  Mosquitto MQTT broker pro Home Assistant (HA Container).
+#
+#  Buď spusť samostatně z této složky:
+#      docker compose up -d
+#  nebo službu `mosquitto` zkopíruj do svého stávajícího compose vedle
+#  služby home-assistant (ať jsou ve stejné Docker síti).
+# =====================================================================
+services:
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: mosquitto
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./config:/mosquitto/config
+      - ./data:/mosquitto/data
+      - ./log:/mosquitto/log

@@ -4,7 +4,8 @@
 //   height       – výška vodního sloupce při plné nádrži [cm]
 //   volume       – objem při plné nádrži [l]
 //   offset       – vzdálenost senzoru od hladiny plné nádrže [cm]
-class WaterTank {
+class WaterTank
+{
   private:
     int height;
     int volume;
