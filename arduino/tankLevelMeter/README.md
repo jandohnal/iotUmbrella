@@ -73,7 +73,7 @@ V základním režimu **Mode 1** je Trig/Echo rozhraní pinově kompatibilní s 
 
 ## Zapojení – Přijímač (ESP32 / esp32dev)
 
-Komponenty: rádiový modul **nRF24L01** + **OLED displej SSD1306 128×64 (I2C)**.
+Komponenty: rádiový modul **nRF24L01** + **OLED displej SSD1306 128×64 (I2C)** + **ovládací tlačítko** (přepínání obrazovek).
 
 ### nRF24L01 (rádio, VSPI)
 
@@ -98,6 +98,17 @@ Komponenty: rádiový modul **nRF24L01** + **OLED displej SSD1306 128×64 (I2C)*
 | SCL | GPIO22 | výchozí I2C SCL na ESP32 |
 
 > Displej se inicializuje přes U8g2 s `U8X8_PIN_NONE` (bez reset pinu) – viz [`src/receiver/OledDisplay.cpp`](src/receiver/OledDisplay.cpp).
+
+### Ovládací tlačítko (přepínání obrazovek)
+
+Krátkým stiskem se cyklicky přepínají obrazovky displeje: **měření → graf → diagnostika → teplota/vlhkost** a zpět.
+
+| Pin tlačítka | ESP32 (GPIO) | Poznámka |
+|--------------|--------------|----------|
+| 1. vývod | GPIO27 | `BUTTON_PIN`, interní pull-up (stisk = LOW) |
+| 2. vývod | GND    | druhá strana tlačítka |
+
+> 💡 Tlačítko se zapojuje **pin → tlačítko → GND**, žádný externí rezistor není potřeba – využívá se interní pull-up (`INPUT_PULLUP`). Stisk se softwarově ošetřuje proti zákmitům (debounce 50 ms). Viz [`src/receiver/main.cpp`](src/receiver/main.cpp).
 
 ---
 
